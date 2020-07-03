@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>penTool</title>
+    <script type="text/javascript" src="dist/bundle.min.js"></script>
+    <!-- <script type="module" src="index.js"></script> -->
+</head>
+<style>
+    #canvas {
+        margin-left: 200px;
+        outline: none;
+        border: 1px solid rgb(162, 102, 231);
+    }
+    #btn {
+        display: block;
+        margin: 150px 0 20px 200px;
+    }
+</style>
+<body>
+    <button id="btn">EnablePen</button>
+    <canvas id="canvas" width="600" height="400"></canvas>
+</body>
+</html>
+
+<script>
+    let pen = new Pen("canvas");
+    document.getElementById("btn").addEventListener("click", event => {
+        pen.enablePen();
+    })
+</script>

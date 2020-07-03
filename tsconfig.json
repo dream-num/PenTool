@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+      "outDir": "./output",
+      "declarationDir": "./lib",
+      "declaration": true,
+      "target": "es2015",
+      "allowJs": true
+  },
+  "include": [
+    "src/*"
+  ]
+}
