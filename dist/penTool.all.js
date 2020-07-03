@@ -278,14 +278,14 @@
                 this.setCursor(CONST.CURSOR_TYPE.NORMAL);
             }
             /**
-             * Exist drawing mode
+             * Exit drawing mode
              * The first call sets currentKeyPointIndex to null and set keyPoint editable
              * The second call removes auxPoints and auxLines
              */
 
         }, {
-            key: 'existPenMode',
-            value: function existPenMode() {
+            key: 'exitPenMode',
+            value: function exitPenMode() {
                 if (this.currentKeyPointIndex != null) {
                     this.currentKeyPointIndex = null;
                     this.isEdit = true; // set editable
@@ -415,7 +415,7 @@
                 this.canvas.addEventListener("keydown", function (event) {
                     if (_this7.penModeOn) {
                         if (event.keyCode === 27) {
-                            _this7.existPenMode();
+                            _this7.exitPenMode();
                         }
                     }
                 });
@@ -506,7 +506,7 @@
                 }
                 // clickoutside or 'ESC' keypress to exit penmode when editmode
                 else if (this.currentKeyPointIndex == null) {
-                        this.existPenMode();
+                        this.exitPenMode();
                     }
                     // first time: clickoutside or 'ESC' keypress set edit mode and reset currentKeyPointIndex
                     else if (this.keyPointData.length > 0 && (this.closeState || this.currentKeyPointIndex !== this.keyPointData.length - 1)) {

@@ -402,11 +402,11 @@ class Pen {
     }
 
     /**
-     * Exist drawing mode
+     * Exit drawing mode
      * The first call sets currentKeyPointIndex to null and set keyPoint editable
      * The second call removes auxPoints and auxLines
      */
-    existPenMode() {
+    exitPenMode() {
         if (this.currentKeyPointIndex != null) {
             this.currentKeyPointIndex = null;
             this.isEdit = true;     // set editable
@@ -516,7 +516,7 @@ class Pen {
         this.canvas.addEventListener("keydown", event => {
             if (this.penModeOn) {
                 if (event.keyCode === 27) {
-                    this.existPenMode();
+                    this.exitPenMode();
                 }
             }
         })
@@ -615,7 +615,7 @@ class Pen {
         
         // clickoutside or 'ESC' keypress to exit penmode when editmode
         else if (this.currentKeyPointIndex == null) {
-            this.existPenMode();
+            this.exitPenMode();
         } 
         
         // first time: clickoutside or 'ESC' keypress set edit mode and reset currentKeyPointIndex

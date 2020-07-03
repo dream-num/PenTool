@@ -1,5 +1,5 @@
-import CONST from './constant.js';
-import CURSOR_CONFIG from './cursorConfig.js';
+import CONST from './constant';
+import CURSOR_CONFIG from './cursorConfig';
 class PenObject {
     constructor(options = {}) {
         /**
@@ -178,11 +178,11 @@ class Pen {
         this.setCursor(CONST.CURSOR_TYPE.NORMAL);
     }
     /**
-     * Exist drawing mode
+     * Exit drawing mode
      * The first call sets currentKeyPointIndex to null and set keyPoint editable
      * The second call removes auxPoints and auxLines
      */
-    existPenMode() {
+    exitPenMode() {
         if (this.currentKeyPointIndex != null) {
             this.currentKeyPointIndex = null;
             this.isEdit = true; // set editable
@@ -285,7 +285,7 @@ class Pen {
         this.canvas.addEventListener("keydown", event => {
             if (this.penModeOn) {
                 if (event.keyCode === 27) {
-                    this.existPenMode();
+                    this.exitPenMode();
                 }
             }
         });
@@ -369,7 +369,7 @@ class Pen {
         }
         // clickoutside or 'ESC' keypress to exit penmode when editmode
         else if (this.currentKeyPointIndex == null) {
-            this.existPenMode();
+            this.exitPenMode();
         }
         // first time: clickoutside or 'ESC' keypress set edit mode and reset currentKeyPointIndex
         else if (this.keyPointData.length > 0 && (this.closeState || this.currentKeyPointIndex !== this.keyPointData.length - 1)) {

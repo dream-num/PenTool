@@ -263,11 +263,11 @@ declare class Pen {
      */
     enablePen(): void;
     /**
-     * Exist drawing mode
+     * Exit drawing mode
      * The first call sets currentKeyPointIndex to null and set keyPoint editable
      * The second call removes auxPoints and auxLines
      */
-    existPenMode(): void;
+    exitPenMode(): void;
     /**
      * Set cursor style
      * @param type cursor type
