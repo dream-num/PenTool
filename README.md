@@ -1,30 +1,32 @@
 # pen-tool
 
-## 概述
+English | [简体中文](./README-zh.md)
 
-基于canvas的路径绘制工具。
-背景：在经常遇到的h5编辑器中，总有各式各样的组件，但是遍寻市面上大多数h5编辑器，没有找到一个满意的轻量级的路径绘制工具，于是决心自己根据现有的想法开发一个。考虑到typescript相对于js的优势，本项目以ts构建。如有不完善的地方或需要新增的功能，请大家踊跃提issue。
+## Overview
 
-### 目录结构
+This project is a canvas-based path drawing tool.
+Background: In the h5 editors that are often encountered, there are always a variety of components, but most h5 editors have not found a satisfactory lightweight path drawing tool. So we decided to develop one according to the existing ideas. Considering the advantages of `typescript` over `javascript`, this project is built with `typescript`. If there are any imperfections or new features need to be added, please actively mention the issue.
+
+### Directory
 ```
 |-- pen-tool
-    |-- dist                                打包后的js目录
+    |-- dist                                build dir
     |   |-- bundle.min.js
     |   |-- penTool.all.js
     |   |-- penTool.all.js.map
-    |-- lib                                 ts声明文件
+    |-- lib                                 typescript declaration dir
     |   |-- constant.d.ts
     |   |-- cursorConfig.d.ts
     |   |-- penTool.d.ts
-    |-- output                              ts编译目录
+    |-- output                              typescript compiles outDir
     |   |-- constant.js
     |   |-- cursorConfig.js
     |   |-- penTool.js
-    |-- src                                 源文件目录
+    |-- src                                 source files
     |   |-- constant.ts
     |   |-- cursorConfig.ts
     |   |-- penTool.ts
-    |-- gulpfile.js                         gulp打包配置
+    |-- gulpfile.js
     |-- index.html
     |-- index.js
     |-- package-lock.json
@@ -33,19 +35,24 @@
     |-- tsconfig.json
 ```
 
-### 开发
-- 编译
+### Development
+- Start local server
+```
+> npm install -g serve
+> serve
+```
+- compile
 ```
 > tsc
 ```
 
-- 打包
+- build
 ```
 > gulp
 ```
 
-### 使用方式
-#### script 标签引入
+### Usage
+#### With script
 ```
 ...
 <head>
@@ -65,8 +72,8 @@
 </script>
 ```
 
-#### import 导入
-**以import导入时，你需要自己启动服务。如`nginx`, `python`或使用Visual Studio Code插件 *[Live Server](https://github.com/ritwickdey/vscode-live-server)***
+#### With import
+
 - index.html
 ```
 <head>
@@ -91,50 +98,51 @@ document.getElementById("btn").addEventListener("click", function() {
 })
 ```
 
-### 参数说明
-一般来说，路径绘制时曲线是必不可少的，但是随手绘制的贝塞尔曲线不可能一步到位。针对这个问题，我们对于曲线给出了一个调整的手柄，通过手柄控制曲线的绘制。
-初始化pen-tool
+### Parameters
+In general, the curve is essential when drawing a path, but the Bezier curve drawn by hand cannot be in one step. In response to this problem, we give an adjustment handle to the curve, and control the drawing of the curve through the handle.
+
+initial penTool
 ```
 var pen = new Pen(canvasId, options);
 ```
-- canvasId: `string` 绘制路径的画布。请确保钢笔工具初始化时dom已存在
+- canvasId: `string` Canvas to draw the path. Make sure that the dom already exists when initializing
 - options: `IPenOptions` optional
-    - circle: `PenCircle` 路径关键点配置
-      - radius: `number` 关键点半径
-      - stroke: `String | CanvasGradient | CanvasPattern` 关键点绘制线条颜色/渐变
-      - fill: `String | CanvasGradient | CanvasPattern` 关键点填充颜色/渐变
-    - line: `PebLine` 曲线控制手柄线条配置
+    - circle: `PenCircle` keyPoint configuration of path
+      - radius: `number` keyPoint radius
+      - stroke: `String | CanvasGradient | CanvasPattern` keyPoint circle strokeStyle
+      - fill: `String | CanvasGradient | CanvasPattern` fillStyle
+    - line: `PebLine` curve control auxLine configuration
       - stroke: `String | CanvasGradient | CanvasPattern`
       - fill: `String | CanvasGradient | CanvasPattern`
-    - pathColor: `string` 路径线条颜色
-    - pathFillColor: `string` 路径填充颜色
-    - isFillPath: `boolean` 是否填充路径，默认`false`不填充
+    - pathColor: `string` path strokeStyle
+    - pathFillColor: `string` path fillStyle
+    - isFillPath: `boolean` Whether fill the path. `false` for default
 
-更多详细参数信息请参见 `lib/penTool.d.ts`
+more information [`lib/penTool.d.ts`](./lib/penTool.d.ts)
   
-#### 退出绘制
-- 退出绘制
+#### Exit drawing
+- Exit
 
-    在钢笔工具开启时，第一次按下`ESC`进入路径编辑模式，此时可以通过移动路径关键点来修改绘制形状; 第二次按下`ESC`或在路径编辑模式下点击空白处，退出绘制。
+    When the pen tool is turned on, press `ESC` for the first time to enter the path editing mode. At this time, you can modify the drawing shape by moving the key points of the path; press `ESC` for the second time or click the blank space in the path editing mode, Quit drawing.
 
-- 编辑路径
+- Edit
 
-    已经退出绘制后想要重新编辑路径，此时只需要 *双击* 路径区域就可重新进入路径编辑模式。关于路径区域的判定请参见 [isPointInPath](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/isPointInPath)
+    If you want to re-edit the path after have exited drawing, just *double-click* the path area to enter the editing mode. For the determination of the path area, please refer to [isPointInPath](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/isPointInPath)
 
-#### 直线曲线功能
-- 改变path类型
+#### Line-Curve
+- Change path type
 
-    在路径编辑模式下：双击关键点，若当前关键点为直线类型，则关键点变为曲线类型，连接前后两个关键点与当前关键点的直线为曲线，反之亦然。
+    In path editing mode: double-click the key point. If the current key point is a straight line type, the key point becomes a curve type. The straight line connecting the two key points before and after the current key point is a curve, and vice versa.
 
-- 曲线控制手柄
+- Curve controller
   
-    对于曲线的控制手柄，移动手柄位置可以改变曲线的贝塞尔函数，但是控制手柄的移动会影响曲线关键点两端的路径。
-    在移动手柄的同时按下`Alt`键，此时可以只控制该手柄端的曲线。
+    For the controllers of curve, moving the position of the handle can change the Bezier function of the curve, but the movement of the controller affects the path at both ends of the key points of the curve.
+    Press the `Alt` key while moving the handle, you can only control the curve of the handle end.
 
-### 后续功能
-当前项目只是简单的实现路径绘制与编辑，还称不上强大，我们未来还会不停地完善，当前的目标：
-- [ ] 支持路径在canvas中移动
-- [ ] 支持多路径绘制
+### Future features
+The current project is only a simple way to draw and edit paths, and it is not powerful. We will continue to improve in the future. Current goals:
+- [ ] Support path to move in canvas
+- [ ] Multi-path drawing
 
 
 ### License
