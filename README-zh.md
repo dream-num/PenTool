@@ -10,10 +10,6 @@
 ### 目录结构
 ```
 |-- pen-tool
-    |-- dist                                打包后的js目录
-    |   |-- bundle.min.js
-    |   |-- penTool.all.js
-    |   |-- penTool.all.js.map
     |-- lib                                 ts声明文件
     |   |-- constant.d.ts
     |   |-- cursorConfig.d.ts
@@ -23,24 +19,22 @@
     |   |-- cursorConfig.js
     |   |-- penTool.js
     |-- src                                 源文件目录
+    |   |-- classes.ts
     |   |-- constant.ts
     |   |-- cursorConfig.ts
+    |   |-- interface.ts
     |   |-- penTool.ts
     |-- gulpfile.js                         gulp打包配置
-    |-- index.html
-    |-- index.js
+    |-- index.esm.js
+    |-- index.umd.js
     |-- package-lock.json
     |-- package.json
     |-- README.md
+    |-- README-zh.md
     |-- tsconfig.json
 ```
 
 ### 开发
-- 启动本地服务
-```
-> npm install -g serve
-> serve
-```
 - 编译
 ```
 > tsc
@@ -52,11 +46,11 @@
 ```
 
 ### 使用方式
-#### script 标签引入
+#### cdn 引入
 ```
 ...
 <head>
-    <script type="text/javascript" src="dist/bundle.min.js"></script>
+    <script type="text/javascript" src="index.umd.js"></script>
 </head>
 <body>
     <button id="btn">EnablePen</button>
@@ -65,20 +59,20 @@
 ...
 
 <script>
-    let pen = new Pen("canvas");
+    let pen = new PenTool("canvas");
     document.getElementById("btn").addEventListener("click", function() {
         pen.enablePen();
     })
 </script>
 ```
 
-#### import 导入
+#### npm import
+```
+npm install pen-tool
+```
 
 - index.html
 ```
-<head>
-    <script type="module" src="index.js"></script>
-</head>
 <body>
     <button id="btn">EnablePen</button>
     <canvas id="canvas" width="600" height="400"></canvas>
@@ -86,12 +80,12 @@
 ```
 - index.js
 ```
-import './dist/bundle.min.js'
+import PenTool from 'pen-tool'
 
-let pen = new Pen("canvas", {
+let pen = new PenTool("canvas", {
     pathFillColor: 'red',
     isFillPath: true
-    ...
+    // ...
 });
 document.getElementById("btn").addEventListener("click", function() {
     pen.enablePen();

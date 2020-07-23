@@ -1,7 +1,6 @@
-import './dist/penTool.all.js'
-// import Pen from './output/penTool.js'
+import PenTool from './index.esm.js'
 
-let pen = new Pen("canvas", {
+let pen = new PenTool("canvas", {
     pathFillColor: 'red',
     isFillPath: true
 });

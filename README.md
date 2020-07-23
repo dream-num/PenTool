@@ -10,10 +10,6 @@ Background: In the h5 editors that are often encountered, there are always a var
 ### Directory
 ```
 |-- pen-tool
-    |-- dist                                build dir
-    |   |-- bundle.min.js
-    |   |-- penTool.all.js
-    |   |-- penTool.all.js.map
     |-- lib                                 typescript declaration dir
     |   |-- constant.d.ts
     |   |-- cursorConfig.d.ts
@@ -23,24 +19,22 @@ Background: In the h5 editors that are often encountered, there are always a var
     |   |-- cursorConfig.js
     |   |-- penTool.js
     |-- src                                 source files
+    |   |-- classes.ts
     |   |-- constant.ts
     |   |-- cursorConfig.ts
+    |   |-- interface.ts
     |   |-- penTool.ts
     |-- gulpfile.js
-    |-- index.html
-    |-- index.js
+    |-- index.esm.js
+    |-- index.umd.js
     |-- package-lock.json
     |-- package.json
     |-- README.md
+    |-- README-zh.md
     |-- tsconfig.json
 ```
 
 ### Development
-- Start local server
-```
-> npm install -g serve
-> serve
-```
 - compile
 ```
 > tsc
@@ -52,11 +46,11 @@ Background: In the h5 editors that are often encountered, there are always a var
 ```
 
 ### Usage
-#### With script
+#### cdn 
 ```
 ...
 <head>
-    <script type="text/javascript" src="dist/bundle.min.js"></script>
+    <script type="text/javascript" src="index.umd.js"></script>
 </head>
 <body>
     <button id="btn">EnablePen</button>
@@ -65,20 +59,20 @@ Background: In the h5 editors that are often encountered, there are always a var
 ...
 
 <script>
-    let pen = new Pen("canvas");
+    let pen = new PenTool("canvas");
     document.getElementById("btn").addEventListener("click", function() {
         pen.enablePen();
     })
 </script>
 ```
 
-#### With import
+#### npm 
+```
+npm install pen-tool
+```
 
 - index.html
 ```
-<head>
-    <script type="module" src="index.js"></script>
-</head>
 <body>
     <button id="btn">EnablePen</button>
     <canvas id="canvas" width="600" height="400"></canvas>
@@ -86,12 +80,12 @@ Background: In the h5 editors that are often encountered, there are always a var
 ```
 - index.js
 ```
-import './dist/bundle.min.js'
+import PenTool from 'pen-tool'
 
-let pen = new Pen("canvas", {
+let pen = new PenTool("canvas", {
     pathFillColor: 'red',
     isFillPath: true
-    ...
+    // ...
 });
 document.getElementById("btn").addEventListener("click", function() {
     pen.enablePen();

@@ -1,11 +1,9 @@
 const gulp = require('gulp')
-const uglify = require('gulp-uglify')
+const uglify = require('gulp-uglify-es').default
 const clean = require('gulp-clean')
-const rename = require('gulp-rename')
-const rollup = require('rollup')
+const rollup = require('rollup').rollup
+const terser = require('rollup-plugin-terser').terser
 const rollupTypescript = require('rollup-plugin-typescript')
-const babel = require('rollup-plugin-babel')
-const sourcemaps = require('gulp-sourcemaps')
 const uglifyOptions = {
   compress: {
     drop_console: true
@@ -17,36 +15,25 @@ function cleanDir() {
     .pipe(clean());
 }
 async function compile() {
-  const bundle = await rollup.rollup({
+  const bundle = await rollup({
     input: './src/penTool.ts',
     plugins: [
       rollupTypescript(),
-      babel({
-        exclude: 'node_modules/**',
-        presets: [
-          ["latest", {
-            "es2015": {
-              "modules": false
-            }
-          }]
-        ]
-      })
-    ]
+      terser()       // 是否压缩
+    ],
   });
-  return bundle.write({
-    file: './dist/penTool.all.js',
+  bundle.write({
+    file: 'index.esm.js',
+    format: 'esm',
+    name: 'PenTool',
+    sourcemap: false
+  })
+  bundle.write({
+    file: 'index.umd.js',
     format: 'umd',
-    name: 'Pen',
-    sourcemap: true
-  });
+    name: 'PenTool',
+    sourcemap: false
+  })
 }
 
-function minify() {
-  return gulp.src('dist/*.js')
-    .pipe(rename('bundle.min.js'))
-    .pipe(sourcemaps.init())
-    .pipe(uglify(uglifyOptions))
-    .pipe(gulp.dest('dist/'))
-}
-
-exports.default = gulp.series(cleanDir, compile, minify)
+exports.default = gulp.series(cleanDir, compile)

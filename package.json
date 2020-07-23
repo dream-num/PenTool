@@ -1,9 +1,10 @@
 {
   "name": "pen-tool",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "a pen plugin based canvas for drawing path",
   "private": false,
-  "main": "index.js",
+  "main": "index.umd.js",
+  "module": "index.esm.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,14 +16,12 @@
     "babel-preset-latest": "^6.24.1",
     "gulp": "^4.0.0",
     "gulp-clean": "^0.4.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-rename": "^2.0.0",
     "gulp-rollup": "^2.17.0",
-    "gulp-sourcemaps": "^2.6.5",
     "gulp-typescript": "^6.0.0-alpha.1",
-    "gulp-uglify": "^3.0.2",
+    "gulp-uglify-es": "^2.0.0",
     "rollup": "^2.18.1",
     "rollup-plugin-babel": "^3.0.7",
+    "rollup-plugin-terser": "^6.1.0",
     "rollup-plugin-typescript": "^1.0.1",
     "tslib": "^2.0.0",
     "typescript": "^3.9.5"
