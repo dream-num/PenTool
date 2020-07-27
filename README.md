@@ -4,6 +4,9 @@ English | [简体中文](./README-zh.md)
 
 ## Overview
 
+![](./static/example.png)
+
+
 This project is a canvas-based path drawing tool.
 Background: In the h5 editors that are often encountered, there are always a variety of components, but most h5 editors have not found a satisfactory lightweight path drawing tool. So we decided to develop one according to the existing ideas. Considering the advantages of `typescript` over `javascript`, this project is built with `typescript`. If there are any imperfections or new features need to be added, please actively mention the issue.
 
@@ -24,7 +27,13 @@ Background: In the h5 editors that are often encountered, there are always a var
     |   |-- cursorConfig.ts
     |   |-- interface.ts
     |   |-- penTool.ts
+    |-- static
+    |   |-- demo.js
+    |   |-- example.png
+    |   |-- rose.png
+    |-- demo.js                             js for demo
     |-- gulpfile.js
+    |-- index.html                          index for demo
     |-- index.esm.js
     |-- index.umd.js
     |-- package-lock.json
@@ -91,6 +100,9 @@ document.getElementById("btn").addEventListener("click", function() {
     pen.enablePen();
 })
 ```
+
+### Demo
+Open `index.html` after starting server to see the demo. `index.html` and `demo.js` in the root directory are the example files.
 
 ### Parameters
 In general, the curve is essential when drawing a path, but the Bezier curve drawn by hand cannot be in one step. In response to this problem, we give an adjustment handle to the curve, and control the drawing of the curve through the handle.

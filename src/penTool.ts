@@ -948,6 +948,7 @@ class Pen {
     drawPath(options: any = {}) {
         this.canvasCtx.fillStyle = this.options.pathFillColor;
         this.canvasCtx.strokeStyle = this.options.pathColor;
+        if (this.penModeOn) this.canvasCtx.strokeStyle = '#000';
 
         this.canvasCtx.beginPath();
         let path = new Path2D(this.realPathStr);

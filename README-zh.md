@@ -4,6 +4,9 @@
 
 ## 概述
 
+![](./static/example.png)
+
+
 基于canvas的路径绘制工具。
 背景：在经常遇到的h5编辑器中，总有各式各样的组件，但是遍寻市面上大多数h5编辑器，没有找到一个满意的轻量级的路径绘制工具，于是决心自己根据现有的想法开发一个。考虑到typescript相对于js的优势，本项目以ts构建。如有不完善的地方或需要新增的功能，请大家踊跃提issue。
 
@@ -24,7 +27,13 @@
     |   |-- cursorConfig.ts
     |   |-- interface.ts
     |   |-- penTool.ts
+    |-- static
+    |   |-- demo.js
+    |   |-- example.png
+    |   |-- rose.png
+    |-- demo.js                             demo的js文件
     |-- gulpfile.js                         gulp打包配置
+    |-- index.html                          demo的入口html
     |-- index.esm.js
     |-- index.umd.js
     |-- package-lock.json
@@ -91,6 +100,9 @@ document.getElementById("btn").addEventListener("click", function() {
     pen.enablePen();
 })
 ```
+
+### 示例
+启动服务后打开index.html即可查看示例。根目录下的`index.html` 及 `demo.js` 为示例文件。
 
 ### 参数说明
 一般来说，路径绘制时曲线是必不可少的，但是随手绘制的贝塞尔曲线不可能一步到位。针对这个问题，我们对于曲线给出了一个调整的手柄，通过手柄控制曲线的绘制。
