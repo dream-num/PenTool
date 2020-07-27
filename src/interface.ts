@@ -45,6 +45,9 @@ interface IPenOptions {
      * Whether need fill the path, when true, fill path with pathFillColor
      */
     isFillPath: boolean;
+
+    /** other options parameters */
+    [param: string]: any
 }
 
 export {

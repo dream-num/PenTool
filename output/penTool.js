@@ -1,107 +1,11 @@
 import CONST from './constant';
 import CURSOR_CONFIG from './cursorConfig';
-class PenObject {
-    constructor(options = {}) {
-        /**
-         * Identify the object as an auxiliary point or line of the path
-         * Since js does not support static attributes,
-         * this attribute will be used as read-only. Please do not modify during use
-         */
-        // static penType: string = CONST.OBJECT_TYPE.PEN_AUX;
-        this.penType = CONST.OBJECT_TYPE.PEN_AUX;
-        /**
-         * property of the Canvas 2D API specifies the color, gradient, or pattern
-         * to use for the strokes (outlines) around shapes.
-         */
-        this.stroke = '#ff56b1';
-        /**
-         * property of the Canvas 2D API specifies the color, gradient, or pattern
-         * to use inside shapes.
-         */
-        this.fill = '#006cff';
-        /**
-         * property of the Canvas 2D API sets the thickness of lines.
-         */
-        this.lineWidth = 1;
-        this.penType = CONST.OBJECT_TYPE.PEN_AUX;
-        this.stroke = options.stroke || '#ff56b1';
-        this.fill = options.fill || '#006cff';
-        this.lineWidth = options.lineWidth || 1;
-    }
-}
-/**
- * aux Circle of penTool
- */
-class PenCircle extends PenObject {
-    constructor(options = {}) {
-        super(options);
-        /**
-         * Radius of Circle
-         */
-        this.radius = 3;
-        /**
-         * property of the Canvas 2D API specifies the color, gradient, or pattern
-         * to use for the strokes (outlines) around shapes.
-         */
-        this.stroke = '#006cff';
-        /**
-         * property of the Canvas 2D API specifies the color, gradient, or pattern
-         * to use inside shapes.
-         */
-        this.fill = '#fff';
-        this.x = options.x;
-        this.y = options.y;
-        this.radius = options.radius || 3;
-        this.keyPointIndex = options.keyPointIndex;
-        this.handleName = options.handleName;
-        this.fill = options.fill || '#fff';
-        this.stroke = options.stroke || '#006cff';
-        this.type = CONST.OBJECT_TYPE.CIRCLE;
-    }
-}
-/**
- * aux Line of penTool
- */
-class PenLine extends PenObject {
-    constructor(options = {}) {
-        super(options);
-        this.x1 = options.x1;
-        this.y1 = options.y1;
-        this.x2 = options.x2;
-        this.y2 = options.y2;
-        this.type = CONST.OBJECT_TYPE.LINE;
-    }
-}
-/**
- * declare path keyPoint Class
- */
-class KeyPoint {
-    constructor({ type, point, pointType, relationPoints, keyPointIndex, controller1, controller2, auxLine1, auxLine2, handleName } = {}) {
-        /**
-         * Indicate the relationship between current keyPoint and previous keyPoint
-         * 'straight' means drawing a Line from previous to current
-         * 'mirrored' means drawing a curve. Cause there will be 2 handlers which are mirror symmetry centered on current keyPoint and in a straight line
-         * 'disjointed' means the curve's handlers are not in a straight line
-         * @default 'straight'
-         */
-        this.pointType = CONST.POINT_TYPE.STRAIGHT;
-        this.type = type;
-        this.point = point;
-        this.pointType = pointType || CONST.POINT_TYPE.STRAIGHT;
-        this.relationPoints = relationPoints || [];
-        this.keyPointIndex = keyPointIndex;
-        this.controller1 = controller1;
-        this.controller2 = controller2;
-        this.auxLine1 = auxLine1;
-        this.auxLine2 = auxLine2;
-        this.handleName = handleName;
-    }
-}
+import { KeyPoint, PenCircle, PenLine } from './classes';
 /**
  * declare Pen Tool Class
  */
 class Pen {
-    constructor(canvasId, options) {
+    constructor(canvasId, options, keyPointData) {
         /**
          * Whether the penTool's edit mode is opened. Default false.
          */
@@ -158,6 +62,12 @@ class Pen {
                     pathColor: '#000',
                     pathFillColor: '#ebebeb' // default pathFillColor
                 }, options);
+                this.closeState = options ? options.closeState : false;
+                this.keyPointData = keyPointData || [];
+                if (this.keyPointData.length > 0) {
+                    this.realPathStr = this._generatePathStr(this.keyPointData);
+                    this.drawPath({ closeState: options.closeState });
+                }
                 // fire mouse event
                 this._mouseDown();
                 this._mouseMove();
@@ -282,6 +192,7 @@ class Pen {
     _keydown() {
         // Set the tabIndex value of canvas so that canvas can get focus. Only in this way can canvas respond to keyboard events
         this.canvas.setAttribute("tabIndex", "0");
+        this.canvas.style.userSelect = "none";
         this.canvas.addEventListener("keydown", event => {
             if (this.penModeOn) {
                 if (event.keyCode === 27) {
@@ -878,15 +789,16 @@ class Pen {
     }
     /**
      * draw path on canvas
-     * @param options config of circle
+     * @param options config of path
      */
-    drawPath(options) {
+    drawPath(options = {}) {
         this.canvasCtx.fillStyle = this.options.pathFillColor;
         this.canvasCtx.strokeStyle = this.options.pathColor;
         this.canvasCtx.beginPath();
         let path = new Path2D(this.realPathStr);
         this.canvasCtx.stroke(path);
-        if (options.closeState) {
+        let isClosed = new RegExp('\\w*[zZ]{1}\\s*', 'g').test(this.realPathStr);
+        if (options.closeState || isClosed) {
             /**
              * keyPointDataCache is null indicate that the drawing is completed.
              */
@@ -903,7 +815,7 @@ class Pen {
     }
     /**
      * draw straight line on canvas
-     * @param options config of circle
+     * @param options config of line
      */
     drawLine(options) {
         this.canvasCtx.fillStyle = options.fill;

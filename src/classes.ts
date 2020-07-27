@@ -1,4 +1,5 @@
 import CONST from './constant'
+import { IPoint, IController } from './interface'
 
 class PenObject {
     /**

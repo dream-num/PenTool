@@ -12,8 +12,10 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
+    "@commitlint/cli": "^9.1.1",
     "babel-core": "^6.26.3",
     "babel-preset-latest": "^6.24.1",
+    "cz-conventional-changelog": "^3.2.0",
     "gulp": "^4.0.0",
     "gulp-clean": "^0.4.0",
     "gulp-rollup": "^2.17.0",
@@ -25,5 +27,10 @@
     "rollup-plugin-typescript": "^1.0.1",
     "tslib": "^2.0.0",
     "typescript": "^3.9.5"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

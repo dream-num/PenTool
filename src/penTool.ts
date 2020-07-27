@@ -1,7 +1,8 @@
 import CONST from './constant'
 import CURSOR_CONFIG from './cursorConfig'
 import { KeyPoint, PenCircle, PenLine } from './classes'
-import { IPenOptions, IPoint } from './interface'
+import { IPenOptions, IPoint, IController } from './interface'
+import { convertStr2Num, chunk, getAbsoluteCordinate } from './utils'
 
 /**
  * declare Pen Tool Class
@@ -105,7 +106,7 @@ class Pen {
      */
     mousedownTarget?: any;
 
-    constructor(canvasId: string, options?: any) {
+    constructor(canvasId: string, options?: any, keyPointData?: KeyPoint[]) {
         try {
             if (!canvasId) {
                 console.error("PenTool must based a canvas, please confirm that the canvasId is passed.")
@@ -118,6 +119,13 @@ class Pen {
                     pathColor: '#000',          // default pathColor
                     pathFillColor: '#ebebeb'    // default pathFillColor
                 }, ...options};
+
+                this.closeState = options ? options.closeState: false
+                this.keyPointData = keyPointData || [];
+                if (this.keyPointData.length > 0) {
+                    this.realPathStr = this._generatePathStr(this.keyPointData)
+                    this.drawPath({closeState: options.closeState})
+                }
 
                 // fire mouse event
                 this._mouseDown();
@@ -935,16 +943,18 @@ class Pen {
 
     /**
      * draw path on canvas
-     * @param options config of circle
+     * @param options config of path
      */
-    drawPath(options: any) {
+    drawPath(options: any = {}) {
         this.canvasCtx.fillStyle = this.options.pathFillColor;
         this.canvasCtx.strokeStyle = this.options.pathColor;
 
         this.canvasCtx.beginPath();
         let path = new Path2D(this.realPathStr);
         this.canvasCtx.stroke(path);
-        if (options.closeState) {
+        
+        let isClosed = new RegExp('\\w*[zZ]{1}\\s*', 'g').test(this.realPathStr)
+        if (options.closeState || isClosed) {
             /**
              * keyPointDataCache is null indicate that the drawing is completed.
              */
@@ -963,7 +973,7 @@ class Pen {
 
     /**
      * draw straight line on canvas
-     * @param options config of circle
+     * @param options config of line
      */
     drawLine(options: any) {
         this.canvasCtx.fillStyle = options.fill;
