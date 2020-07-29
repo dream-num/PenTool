@@ -104,6 +104,8 @@ document.getElementById("btn").addEventListener("click", function() {
 ### 示例
 启动服务后打开index.html即可查看示例。根目录下的`index.html` 及 `demo.js` 为示例文件。
 
+或查看在线 [Demo](https://mengshukeji.github.io/PenTool/)
+
 ### 参数说明
 一般来说，路径绘制时曲线是必不可少的，但是随手绘制的贝塞尔曲线不可能一步到位。针对这个问题，我们对于曲线给出了一个调整的手柄，通过手柄控制曲线的绘制。
 初始化pen-tool

@@ -1231,7 +1231,7 @@ class Pen {
      */
     generateAuxPointLine(keyPointData: KeyPoint[] = []) {
         if (keyPointData.length === 0) return;
-        keyPointData.forEach((keyPoint, index) => {
+        keyPointData.forEach((keyPoint) => {
             let x = keyPoint.point.x,
                 y = keyPoint.point.y,
                 circle = new PenCircle({

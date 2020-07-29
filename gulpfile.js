@@ -26,13 +26,13 @@ async function compile() {
     file: 'index.esm.js',
     format: 'esm',
     name: 'PenTool',
-    sourcemap: false
+    sourcemap: true
   })
   bundle.write({
     file: 'index.umd.js',
     format: 'umd',
     name: 'PenTool',
-    sourcemap: false
+    sourcemap: true
   })
 }
 

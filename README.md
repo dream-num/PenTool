@@ -104,6 +104,8 @@ document.getElementById("btn").addEventListener("click", function() {
 ### Demo
 Open `index.html` after starting server to see the demo. `index.html` and `demo.js` in the root directory are the example files.
 
+Or see the [Demo](https://mengshukeji.github.io/PenTool/)
+
 ### Parameters
 In general, the curve is essential when drawing a path, but the Bezier curve drawn by hand cannot be in one step. In response to this problem, we give an adjustment handle to the curve, and control the drawing of the curve through the handle.
 
